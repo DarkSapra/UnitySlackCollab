@@ -7,8 +7,6 @@
     /// </summary>
     public class PlayerRotate : MonoBehaviour
     {
-        [SerializeField] private float rotationSpeed = 10f;
-
         private Transform transformToRotate;
         private float currentRotation = 0f;
         private InputBridge inputBridge;
@@ -21,7 +19,7 @@
             inputBridge = GetComponent<InputBridge>();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             ProcessRotation();
         }
@@ -33,8 +31,7 @@
         {
             currentRotation += 
                 inputBridge.LookAxis().x * 
-                Time.deltaTime * 
-                rotationSpeed * 10;
+                Time.deltaTime * 10;
             transformToRotate.localRotation = 
                 Quaternion.Euler(Vector3.up * currentRotation);
         }

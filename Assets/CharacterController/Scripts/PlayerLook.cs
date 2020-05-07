@@ -7,7 +7,6 @@
     /// </summary>
     public class PlayerLook : MonoBehaviour
     {
-        [SerializeField] private float rotationSpeed = 10f;
         [Range(0f, 90f)]
         [SerializeField] private float upperLimit = 60f;
         [Range(0f, 90f)]
@@ -40,15 +39,13 @@
             {
                 currentRotation += 
                     inputBridge.LookAxis().y * 
-                    Time.deltaTime * 
-                    rotationSpeed * 10;
+                    Time.deltaTime * 10;
             }
             else
             {
                 currentRotation -= 
                     inputBridge.LookAxis().y * 
-                    Time.deltaTime * 
-                    rotationSpeed * 10;
+                    Time.deltaTime * 10;
             }
             currentRotation = 
                 Mathf.Clamp(currentRotation, -upperLimit, lowerLimit);

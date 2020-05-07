@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6a1faedf734f1047a51bc4796bd9eb1, type: 3}
+  m_Name: GunFast
+  m_EditorClassIdentifier: 
+  clip: {fileID: 7400000, guid: b87d9bbf8ae5779478a09c5e491ca685, type: 2}
+  gunModel: {fileID: 4210265596459822757, guid: 047bc4c572440624ab93d8898341fc13,
+    type: 3}
+  rateOfFire: 1
+  speed: 10
+  deathTime: 5
