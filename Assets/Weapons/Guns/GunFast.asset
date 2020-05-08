@@ -15,6 +15,6 @@ MonoBehaviour:
   clip: {fileID: 7400000, guid: b87d9bbf8ae5779478a09c5e491ca685, type: 2}
   gunModel: {fileID: 4210265596459822757, guid: 047bc4c572440624ab93d8898341fc13,
     type: 3}
-  rateOfFire: 1
-  speed: 10
-  deathTime: 5
+  rateOfFire: 0.2
+  speed: 2
+  deathTime: 4

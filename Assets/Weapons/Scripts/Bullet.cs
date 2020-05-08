@@ -11,6 +11,7 @@
 
         public float speed = 10;
         public float deathTime = 5;
+        private float amount;
 
 
         /// <summary>
@@ -20,8 +21,8 @@
         {
             if(this.isActiveAndEnabled)
             {
-                deathTime += Time.deltaTime;
-                if(deathTime > 2 || Physics.Raycast(transform.position, transform.forward, speed*Time.deltaTime))
+                amount += Time.deltaTime;
+                if(amount > deathTime || Physics.Raycast(transform.position, transform.forward, speed*Time.deltaTime))
                     Destroy();        
                 transform.position = transform.position+transform.forward*speed*Time.deltaTime;
             }
@@ -29,7 +30,7 @@
         }    
         void Destroy()
         {
-            deathTime = 0;
+            amount = 0;
             gameObject.SetActive(false);
             starter.activeBullets.Remove(this.gameObject);
             starter.disabledBullets.Add(this.gameObject);
