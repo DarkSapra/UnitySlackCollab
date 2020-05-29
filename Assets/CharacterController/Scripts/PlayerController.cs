@@ -1,6 +1,7 @@
 ﻿namespace USC.CharacterController
 {
     using UnityEngine;
+    using Mirror;
 
     /// <summary>
     /// Moves the player avatar
@@ -8,7 +9,7 @@
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(InputBridge))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : NetworkBehaviour
     {
         [Header("Controller Settings")]
         [SerializeField] float moveSpeed = 10f;
@@ -32,6 +33,7 @@
         private Vector3 velocityAdjustment = Vector3.zero;
         private Vector3 origin = Vector3.zero;
         private InputBridge inputBridge;
+        private Ride _ride;
 
         public enum CastDirection
         {
@@ -44,16 +46,27 @@
         }
         private CastDirection castDirection;
 
-        private void Awake()
+        private void Start()
         {
-            tr = transform;
-            inputBridge = GetComponent<InputBridge>();
-            rig = GetComponent<Rigidbody>();
-            col = GetComponent<CapsuleCollider>();
-            rig.freezeRotation = true;
-            rig.useGravity = false;
-            SetupCollider();
-            CalibrateRaycast();
+            _ride = GetComponent<Ride>();
+            if(isLocalPlayer)
+            {
+                tr = transform;
+                inputBridge = GetComponent<InputBridge>();
+                rig = GetComponent<Rigidbody>();
+                col = GetComponent<CapsuleCollider>();
+                rig.freezeRotation = true;
+                rig.useGravity = false;
+                SetupCollider();
+                CalibrateRaycast();
+            }
+            else
+            {
+                rig = GetComponent<Rigidbody>();
+                rig.freezeRotation = true;
+                rig.useGravity = false;
+                rig.isKinematic = true;
+            }
         }
 
         /// <summary>
@@ -66,7 +79,18 @@
 
         private void FixedUpdate()
         {
-            GroundCheck();
+            if(!isLocalPlayer)
+                return;
+            if(!_ride.riding)
+            {       
+                ControlPlayer();
+            }
+
+        }
+
+        void ControlPlayer()
+        {
+                        GroundCheck();
             Vector3 velocity = Vector3.zero;
             velocity += GetMoveDirection() * moveSpeed;
             if (!isGrounded)
@@ -85,7 +109,6 @@
             velocity += tr.up * verticalSpeed;
             SetVelocity(velocity);
         }
-
         /// <summary>
         /// Update if player is grounded
         /// </summary>
@@ -184,5 +207,28 @@
         {
             rig.velocity = velocity + velocityAdjustment;
         }
+
+        
+        /// <summary>
+        /// Change the position to everyone
+        /// </summary>
+        void LateUpdate()
+        {
+            if(isLocalPlayer)
+                CmdPosition(transform.position);
+        }
+        [Command]
+        void CmdPosition(Vector3 position)
+        {
+            transform.position = position;
+            RpcPosition(position);
+        }
+        [ClientRpc]
+        void RpcPosition(Vector3 position)
+        {
+            if(!isLocalPlayer)
+                transform.position = position;
+        }
+
     }
 }
